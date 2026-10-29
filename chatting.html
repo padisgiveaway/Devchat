@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Direct Chat</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#E5DDD5] h-screen flex flex-col">
+<div class="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3"><a href="index.html" class="w-8 h-8 bg-black rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></a><div style="background:linear-gradient(135deg,#25D366,#128C7E);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800">DV</div><div class="flex-1"><div id="chatName" class="font-bold">Developer</div><div class="text-[11px] opacity-80">Direct chat - No payment</div></div><a id="waLink" target="_blank" class="bg-green-500 px-3 py-1.5 rounded-full text-xs font-bold"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></div>
+<div id="directMessages" class="flex-1 overflow-y-auto p-4 space-y-3" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')"></div>
+<div class="bg-[#F0F0F0] p-3 flex gap-2"><input id="dmInput" placeholder="Type a message..." class="flex-1 rounded-full px-5 py-2.5 focus:outline-none"><button id="dmSend" class="bg-black text-white w-10 h-10 rounded-full"><i class="fa-solid fa-paper-plane"></i></button></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637",measurementId:"G-C170BY4MDK"};
+const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getDatabase(app);
+const params=new URLSearchParams(location.search);const withUser=params.get('with');const withName=params.get('name')||withUser;
+document.getElementById('chatName').textContent=decodeURIComponent(withName);document.getElementById('waLink').href=`https://wa.me/${withUser}?text=Hi%20from%20DevChat`;
+let currentUser=null;onAuthStateChanged(auth, u=>{currentUser=u;if(!u)location.href='register.html';else loadDirect();});
+const chatId=()=>{if(!currentUser)return null;return [currentUser.uid, withUser].sort().join('_');};
+function loadDirect(){const id=chatId();if(!id)return;onValue(ref(db,'directChats/'+id), snap=>{const box=document.getElementById('directMessages');box.innerHTML='';snap.forEach(c=>{const m=c.val();const isMe=m.uid===currentUser.uid;const div=document.createElement('div');div.className=`flex ${isMe?'justify-end':'justify-start'}`;div.innerHTML=`<div class="${isMe?'bg-[#DCF8C6]':'bg-white'} px-3 py-2 rounded-2xl max-w-[75%] text-sm"><div>${m.text}</div><div class="text-[10px] text-gray-500 text-right">${new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;box.appendChild(div);});box.scrollTop=box.scrollHeight;});}
+async function sendDM(){const input=document.getElementById('dmInput');if(!input.value.trim())return;const id=chatId();await push(ref(db,'directChats/'+id),{uid:currentUser.uid,text:input.value,timestamp:Date.now()});input.value='';}
+document.getElementById('dmSend').onclick=sendDM;document.getElementById('dmInput').onkeydown=e=>{if(e.key==='Enter')sendDM();};
+</script>
+</body>
+</html>

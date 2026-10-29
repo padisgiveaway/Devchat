@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>General Chat - DevChat</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box} html,body{margin:0;padding:0;width:100%;overflow-x:hidden}
+body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-direction:column;background:#E5DDD5}
+.chat-left{background:white;border-radius:0 16px 16px 16px;max-width:78%;word-break:break-word}
+.chat-right{background:#DCF8C6;border-radius:16px 0 16px 16px;max-width:78%;word-break:break-word}
+.adsterra{width:100%;background:white;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center;min-height:60px;border-radius:12px}
+</style>
+</head>
+<body>
+<div class="bg-[#075E54] text-white px-3 py-2.5 flex justify-between items-center w-full">
+<div class="flex items-center gap-2 min-w-0">
+<a href="index.html" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-arrow-left text-xs"></i></a>
+<div class="min-w-0">
+<div class="font-black text-[15px]">DevChat - General Chat</div>
+<div class="text-[10px] opacity-80 truncate"><span id="totalUsers">9</span> members · <span id="onlineUsers">7</span> online · <span id="offlineUsers">2</span> offline</div>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0"><img id="myAvatarTop" class="w-8 h-8 rounded-full hidden border-2 border-white"></div>
+</div>
+<div class="bg-white p-2 w-full border-b">
+<div class="adsterra">
+<div class="text-center"><p class="text-[11px] font-bold text-gray-600">Adsterra Banner Ad</p><p class="text-[10px] text-gray-400">Paste your Adsterra code here - Top of chat under member count</p></div>
+</div>
+</div>
+<div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 w-full" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');background-size:400px"></div>
+<div class="bg-[#F0F0F0] p-2 flex gap-2 items-center w-full border-t">
+<input id="chatInput" placeholder="Type a message..." class="flex-1 min-w-0 rounded-full px-4 py-2.5 border text-sm focus:outline-none">
+<button id="sendBtn" class="bg-[#075E54] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+</div>
+<script>
+const exampleMessages=[
+{name:"Michael Johnson",photo:"https://i.pravatar.cc/150?img=1",text:"Hello guys! Who sabi React Native? I get gig for una 👋",role:"Fullstack Dev",timestamp:Date.now()-100000},
+{name:"Sarah Adams",photo:"https://i.pravatar.cc/150?img=2",text:"I dey available! Show me the job for contacts section",role:"Frontend Dev",timestamp:Date.now()-80000},
+{name:"Aisha Bello",photo:"https://i.pravatar.cc/150?img=4",text:"We dey hire backend devs for fintech. Check jobs tab!",role:"Backend Dev",timestamp:Date.now()-60000},
+{name:"DevChat Bot",photo:"https://ui-avatars.com/api/?name=Bot&background=25D366&color=fff",text:"Welcome to DevChat! Invite 5 friends to unlock jobs section 🚀",role:"Bot",timestamp:Date.now()-40000}
+];
+function adBannerHTML(){return '<div class="adsterra"><span class="text-[10px] text-gray-400">Adsterra Banner Ad</span></div>';}
+function renderChatMessages(messages){
+var box=document.getElementById('chatMessages'); if(!box) return; box.innerHTML='';
+(messages||exampleMessages).forEach(function(m,idx){
+if(idx>0&&idx%5===0){var ad=document.createElement('div'); ad.className='w-full'; ad.innerHTML=adBannerHTML(); box.appendChild(ad);}
+var isMe=m.name==='You'; var div=document.createElement('div'); div.className='flex gap-2 w-full '+(isMe?'justify-end':'');
+if(isMe){div.innerHTML='<div class="chat-right px-3 py-2"><div class="text-[13px]">'+m.text+'</div><div class="text-[10px] text-gray-600 text-right mt-1">'+new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' ✓✓</div></div>';}
+else{div.innerHTML='<img src="'+(m.photo||'https://ui-avatars.com/api/?name='+encodeURIComponent(m.name))+'" class="w-8 h-8 rounded-full flex-shrink-0 object-cover"><div class="chat-left px-3 py-2"><div class="text-[11px] font-bold text-[#075E54] truncate">'+m.name+' • '+(m.role||'')+'</div><div class="text-[13px] mt-1">'+m.text+'</div><div class="text-[10px] text-gray-500 text-right mt-1">'+new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div></div>';}
+box.appendChild(div);
+});
+box.scrollTop=box.scrollHeight;
+}
+renderChatMessages(exampleMessages);
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getDatabase, ref, onValue, push, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getDatabase(app);
+onAuthStateChanged(auth, async u=>{ if(!u) return; const av=document.getElementById('myAvatarTop'); if(av){av.src=u.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||'Dev')}`; av.classList.remove('hidden');}});
+onValue(ref(db,'users'), snap=>{let a=[]; snap.forEach(c=>{a.push(c.val());}); document.getElementById('totalUsers').textContent=a.length+9; var on=Math.floor((a.length+9)*0.7); document.getElementById('onlineUsers').textContent=on; document.getElementById('offlineUsers').textContent=(a.length+9)-on;});
+onValue(query(ref(db,'messages'),orderByChild('timestamp'),limitToLast(100)), snap=>{if(!snap.exists()) return; let m=[]; snap.forEach(c=>{m.push(c.val());}); if(m.length>0) renderChatMessages(m);});
+const sendBtn=document.getElementById('sendBtn'); const chatInput=document.getElementById('chatInput');
+async function sendMsg(){ if(!chatInput.value.trim()) return; try{await push(ref(db,'messages'),{name:'You',text:chatInput.value,timestamp:Date.now(),photo:'https://ui-avatars.com/api/?name=You&background=25D366&color=fff'}); chatInput.value='';}catch(e){const box=document.getElementById('chatMessages'); const div=document.createElement('div'); div.className='flex gap-2 justify-end w-full'; div.innerHTML='<div class="chat-right px-3 py-2"><div class="text-[13px]">'+chatInput.value+'</div></div>'; box.appendChild(div); box.scrollTop=box.scrollHeight; chatInput.value='';}}
+if(sendBtn) sendBtn.onclick=sendMsg; if(chatInput) chatInput.onkeydown=e=>{if(e.key==='Enter') sendMsg();};
+</script>
+</body>
+</html>

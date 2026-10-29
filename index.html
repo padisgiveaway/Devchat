@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<!-- ===== DEVCHAT SEO + LINK PREVIEW ===== -->
+
+<!-- Title & Descriptions -->
+<title>DevChat — Where Developers Connect, Collaborate & Get Hired</title>
+<meta name="description" content="DevChat is the home for every developer. Whether you're a frontend dev, backend engineer, DevOps, UI/UX designer, data scientist, or just starting out — DevChat brings all IT professionals together. Share code, solve problems, chat in real-time, build teams, and discover remote & onsite jobs from top companies. No noise. Just devs helping devs get hired.">
+<meta name="keywords" content="devchat, developers community, programming jobs, IT jobs, dev chat, programmers forum, tech jobs, remote developer jobs, coding community">
+<meta name="author" content="DevChat">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://devchat.com/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="/IMG-20261028-WA2088.jpg">
+
+<!-- Open Graph - This controls WhatsApp, Facebook, LinkedIn, Telegram preview -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devchat.com/">
+<meta property="og:title" content="DevChat — Where Developers Connect, Collaborate & Get Hired">
+<meta property="og:description" content="DevChat is the home for every developer. Join 5,000+ programmers, IT pros & tech talent to chat, share code, solve problems, and find remote & onsite jobs. The global hub for developers to connect and get hired.">
+<meta property="og:image" content="https://devchat.com/IMG-20261028-WA2088.jpg">
+<meta property="og:image:secure_url" content="https://devchat.com/IMG-20261028-WA2088.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DevChat - Where Developers Connect and Get Hired">
+<meta property="og:site_name" content="DevChat">
+
+<!-- Twitter / X - This controls X preview -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://devchat.com/">
+<meta name="twitter:title" content="DevChat — Where Developers Connect, Collaborate & Get Hired">
+<meta name="twitter:description" content="The global hub for all programmers, IT workers and developers to connect, collaborate, and land their next job. Join free today.">
+<meta name="twitter:image" content="https://devchat.com/IMG-20261028-WA2088.jpg">
+<meta name="twitter:image:alt" content="DevChat community platform">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#2563EB">
+
+<!-- Long Description for Google - Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "DevChat",
+  "url": "https://devchat.com",
+  "logo": "https://devchat.com/IMG-20261028-WA2088.jpg",
+  "image": "https://devchat.com/IMG-20261028-WA2088.jpg",
+  "description": "DevChat is the home for every developer. Whether you're a frontend dev, backend engineer, DevOps, UI/UX designer, data scientist, or just starting out — DevChat brings all IT professionals together. Share code, solve problems, chat in real-time, build teams, and discover remote & onsite jobs from top companies. No noise. Just devs helping devs get hired.",
+  "sameAs": [
+    "https://twitter.com/devchat",
+    "https://github.com/devchat"
+  ]
+}
+</script>
+<link rel="shortcut icon" type="image/jpg" href="IMG-20261028-WA1793.jpg">
+<title>DevChat</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;overflow-x:hidden}
+body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-direction:column;background:white}
+.tab{flex:1;min-width:0;padding:10px 4px;border-radius:9999px;font-size:12px;font-weight:800;white-space:nowrap;text-align:center}
+.tab.active{background:black;color:white}
+.chat-left{background:white;border-radius:0 16px 16px 16px;max-width:78%;word-break:break-word}
+.chat-right{background:#DCF8C6;border-radius:16px 0 16px 16px;max-width:78%;word-break:break-word}
+.logo{background:linear-gradient(135deg,#25D366,#128C7E);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;flex-shrink:0}
+.card{width:100%;max-width:100%;overflow:hidden}
+.adsterra{width:100%;background:white;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center;min-height:60px;border-radius:12px}
+</style>
+</head>
+<body>
+<div class="bg-white text-white px-3 py-2 flex justify-between items-center w-full border-b">
+<div class="flex items-center gap-2 min-w-0 flex-1">
+<div class="logo">DV</div>
+<div class="min-w-0">
+<div class="font-black text-[30px] leading-none truncate" style="color: black">DevChat</div>
+<div class="text-[5px] opacity-80 truncate" style="color: black;font-weight: 1000;font-size: 10px;">we have <span id="totalUsers" style="color: blue;">9</span> users of devchat</div>
+</div>
+</div>
+<div class="flex gap-1.5 items-center flex-shrink-0">
+<img id="myAvatarTop" class="w-8 h-8 rounded-full hidden border-2 border-white">
+<button onclick="document.getElementById('profileEditModal').classList.remove('hidden'); renderMyGigs()" class="w-8 h-8 bg-black rounded-full flex-shrink-0"><i class="fa-solid fa-user text-[11px]"></i></button>
+<button onclick="logoutBtn()" class="w-8 h-8 bg-black rounded-full flex-shrink-0"><i class="fa-solid fa-right-from-bracket text-[11px]"></i></button>
+</div>
+</div>
+<div class="bg-white border-b px-2 py-2 flex gap-1.5 w-full">
+<button onclick="switchTab('chat')" id="btn-chat" class="tab active">💬 Chatting</button>
+<button onclick="switchTab('contacts')" id="btn-contacts" class="tab bg-gray-100">👥 Contacts</button>
+<button onclick="switchTab('jobs')" id="btn-jobs" class="tab bg-gray-100">💼 Jobs</button>
+</div>
+<div id="contentArea" class="flex-1 overflow-hidden relative w-full">
+<div id="chatTab" class="h-full bg-[#E5DDD5] absolute inset-0 flex flex-col w-full">
+<div id="chatLanding" class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+<div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow">
+<div class="logo mx-auto w-16 h-16 text-xl">DV</div>
+<h2 class="font-black text-xl mt-4">General Group Chat</h2>
+<p class="text-xs text-gray-500 mt-2"><span id="landingOnline">7</span> developers online now</p>
+<p class="text-sm text-gray-600 mt-4">Join the general chat to discuss gigs, code, and collabs with 9+ developers. WhatsApp style.</p>
+<button onclick="openGeneralChat()" class="mt-6 w-full bg-black text-white py-3.5 rounded-full font-black text-sm"><i class="fa-solid fa-comments mr-2"></i>Join General Chat</button>
+<a href="devchat.html" class="mt-3 w-full border py-3 rounded-full font-bold text-sm block text-center">Open Full Page (devchat.html)</a>
+<div class="mt-6"><div class="adsterra"><span class="text-[11px] text-gray-400">Adsterra Banner Ad - 320x50<br>Paste your code here</span></div></div>
+</div>
+</div>
+<div id="chatFull" class="hidden flex-1 flex-col h-full w-full">
+<div class="bg-[#F0F0F0] px-3 py-2 flex justify-between items-center border-b w-full">
+<div class="min-w-0"><p class="text-[12px] font-black truncate">General Group Chat</p><p class="text-[10px] text-gray-500 truncate"><span id="chatOnline2">7</span> online · WhatsApp style</p></div>
+<button onclick="document.getElementById('chatWithDevsModal').classList.remove('hidden')" class="bg-black text-white text-[10px] px-3 py-1.5 rounded-full font-bold flex-shrink-0">Other Devs</button>
+</div>
+<div class="bg-white p-2 w-full"><div class="adsterra"><span class="text-[11px] text-gray-400">Adsterra Banner - Top of Chat (Paste Code)</span></div></div>
+<div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 w-full" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');background-size:400px"></div>
+<div class="bg-[#F0F0F0] p-2 flex gap-2 items-center w-full border-t">
+<input id="chatInput" placeholder="Type a message..." class="flex-1 min-w-0 rounded-full px-4 py-2.5 border text-sm focus:outline-none">
+<button id="sendBtn" class="bg-[#075E54] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+</div>
+</div>
+</div>
+<div id="contactsTab" class="h-full bg-white overflow-y-auto p-3 hidden absolute inset-0 w-full">
+<div class="w-full"><p class="text-[11px] text-gray-500"><span id="contactsCount">9</span> developers · Click to chat</p><div class="mt-2 adsterra"><span class="text-[11px] text-gray-400">Adsterra Banner - Contacts Top</span></div></div>
+<div id="contactsList" class="mt-3 grid gap-2.5 w-full pb-10"></div>
+</div>
+<div id="jobsTab" class="h-full bg-gray-50 overflow-y-auto p-3 hidden absolute inset-0 w-full">
+<div class="w-full"><div class="adsterra mb-3"><span class="text-[11px] text-gray-400">Adsterra Banner - Jobs Top</span></div><span id="jobLockBadge" class="inline-block text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold">🔒 Locked - Invite 5</span></div>
+<div id="jobsLocked" class="mt-4 border-2 border-dashed rounded-2xl p-6 text-center bg-white w-full">
+<div class="text-4xl">🔒</div><h4 class="font-bold mt-2">Job Updates Locked</h4><p class="text-xs text-gray-500 mt-1">Invite 5 devs to unlock</p>
+<button onclick="copyInvite()" class="mt-4 bg-black text-white px-6 py-2.5 rounded-full text-sm font-bold w-full">Copy Invite (<span id="inviteCount">0</span>/5)</button>
+<p id="inviteLink" class="text-[10px] break-all text-gray-400 mt-3 bg-gray-100 p-2 rounded-lg w-full overflow-hidden"></p>
+</div>
+<div id="jobsUnlocked" class="hidden w-full"><div class="mt-3 adsterra"><span class="text-[11px] text-gray-400">Adsterra - Featured Job Ad</span></div>
+<form id="jobForm" class="mt-3 bg-white p-3 rounded-2xl border space-y-2 w-full"><input id="jobTitle" required placeholder="Title" class="w-full border rounded-xl px-3 py-2.5 text-sm"><input id="jobBudget" placeholder="Budget" class="w-full border rounded-xl px-3 py-2.5 text-sm"><textarea id="jobDesc" required placeholder="Description + WhatsApp" rows="3" class="w-full border rounded-xl px-3 py-2.5 text-sm"></textarea><button class="w-full bg-black text-white py-2.5 rounded-full text-sm font-bold">Post Now</button></form>
+<div id="jobsList" class="mt-3 grid gap-2.5 w-full pb-10"></div></div>
+</div>
+</div>
+<div id="contactModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-md w-full p-6 relative overflow-hidden max-h-[90vh] overflow-y-auto"><button onclick="document.getElementById('contactModal').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark"></i></button><div id="modalContent" class="w-full overflow-hidden"></div></div></div>
+<div id="chatWithDevsModal" class="fixed inset-0 bg-black/60 hidden z-[70] flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-md w-full p-6 relative"><button onclick="document.getElementById('chatWithDevsModal').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark"></i></button><h3 class="font-bold">Start chat with other developers</h3><div class="mt-4 grid gap-3"><button onclick="switchTab('contacts');document.getElementById('chatWithDevsModal').classList.add('hidden')" class="bg-black text-white py-3 rounded-full font-bold">Browse Contacts</button><a href="devchat.html" class="bg-[#075E54] text-white py-3 rounded-full font-bold text-center">Open General Chat Page</a></div></div></div>
+<div id="profileEditModal" class="fixed inset-0 bg-black/60 hidden z-[60] flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-md w-full p-4 relative max-h-[90vh] overflow-y-auto"><button onclick="document.getElementById('profileEditModal').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full"><i class="fa-solid fa-xmark"></i></button>
+<h3 class="font-bold">Edit Profile</h3>
+<form id="editProfileForm" class="mt-3 space-y-2"><input id="editFullName" placeholder="Full Name" class="w-full border rounded-xl px-3 py-2.5 text-sm"><input id="editRole" placeholder="Role" class="w-full border rounded-xl px-3 py-2.5 text-sm"><input id="editWhatsapp" placeholder="WhatsApp" class="w-full border rounded-xl px-3 py-2.5 text-sm"><button class="w-full bg-black text-white py-3 rounded-full font-bold text-sm">Save Profile</button></form>
+<div class="border-t mt-5 pt-4">
+<h3 class="font-black text-sm">🚀 Post a Gig on Your Profile</h3>
+<p class="text-[11px] text-gray-500">This gig go show for your profile when people click View. You fit edit or delete am.</p>
+<form id="postGigForm" class="mt-3 space-y-2">
+<input id="gigTitle" required placeholder="Gig Title e.g. I will build React website" class="w-full border rounded-xl px-3 py-2.5 text-sm">
+<input id="gigBudget" required placeholder="Price e.g. $100" class="w-full border rounded-xl px-3 py-2.5 text-sm">
+<input id="gigLink" placeholder="Portfolio / Demo Link (optional)" class="w-full border rounded-xl px-3 py-2.5 text-sm">
+<textarea id="gigDesc" required placeholder="Describe your gig..." rows="3" class="w-full border rounded-xl px-3 py-2.5 text-sm"></textarea>
+<button id="gigSubmitBtn" class="w-full bg-[#075E54] text-white py-3 rounded-full font-bold text-sm">Post Gig to My Profile</button>
+<button type="button" id="gigCancelEdit" onclick="cancelGigEdit()" class="hidden w-full border py-2 rounded-full text-xs font-bold mt-1">Cancel Edit</button>
+</form>
+<div id="myGigsList" class="mt-3 grid gap-2"></div>
+</div>
+</div></div>
+<script>
+window.switchTab=function(tab){
+document.getElementById('chatTab').classList.add('hidden');
+document.getElementById('contactsTab').classList.add('hidden');
+document.getElementById('jobsTab').classList.add('hidden');
+document.getElementById(tab+'Tab').classList.remove('hidden');
+document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+document.getElementById('btn-'+tab).classList.add('active');
+};
+window.openGeneralChat=function(){
+document.getElementById('chatLanding').classList.add('hidden');
+document.getElementById('chatFull').classList.remove('hidden');
+document.getElementById('chatFull').classList.add('flex');
+renderChatMessages(window.currentMessages||exampleMessages);
+};
+window.logoutBtn=function(){localStorage.removeItem('devchat_user_logged');location.href='register.html';};
+window.copyInvite=function(){var l=localStorage.getItem('inviteLink')||location.origin+'/register.html';navigator.clipboard.writeText(l);alert('Copied: '+l);};
+const exampleContacts=[
+{fullName:"Michael Johnson",role:"Fullstack Dev",skills:"React, Node",bio:"Built 20+ startups",gigs:24,whatsapp:"2348100000001",photo:"https://i.pravatar.cc/150?img=1"},
+{fullName:"Sarah Adams",role:"Frontend Dev",skills:"Vue, Tailwind",bio:"30+ landing pages",gigs:18,whatsapp:"2348100000002",photo:"https://i.pravatar.cc/150?img=2"},
+{fullName:"David Okoro",role:"Mobile Dev",skills:"Flutter",bio:"Play Store 10k+",gigs:12,whatsapp:"2348100000003",photo:"https://i.pravatar.cc/150?img=3"},
+{fullName:"Aisha Bello",role:"Backend Dev",skills:"Python, Django",bio:"APIs at scale",gigs:15,whatsapp:"2348100000004",photo:"https://i.pravatar.cc/150?img=4"},
+{fullName:"Emeka Code",role:"Blockchain Dev",skills:"Solidity",bio:"Smart contracts",gigs:9,whatsapp:"2348100000005",photo:"https://i.pravatar.cc/150?img=5"},
+{fullName:"Grace Lee",role:"UI/UX",skills:"Figma",bio:"Design systems",gigs:22,whatsapp:"2348100000006",photo:"https://i.pravatar.cc/150?img=6"},
+{fullName:"Tunde Dev",role:"DevOps",skills:"Docker",bio:"Deploy fast",gigs:11,whatsapp:"2348100000007",photo:"https://i.pravatar.cc/150?img=7"},
+{fullName:"Zainab Musa",role:"Data Scientist",skills:"Python, ML",bio:"ML models",gigs:8,whatsapp:"2348100000008",photo:"https://i.pravatar.cc/150?img=8"},
+{fullName:"padis",role:"FullStack Developer",skills:"HTML, CSS, JavaScript with NodeJS and firebase",bio:"Fullstack",gigs:0,whatsapp:"234",photo:"https://ui-avatars.com/api/?name=padis&background=random"}
+];
+const exampleMessages=[
+{name:"Michael Johnson",photo:"https://i.pravatar.cc/150?img=1",text:"Hello guys! Who sabi React Native? I get gig for una 👋",role:"Fullstack Dev",timestamp:Date.now()-100000},
+{name:"Sarah Adams",photo:"https://i.pravatar.cc/150?img=2",text:"I dey available! Show me the job for contacts section",role:"Frontend Dev",timestamp:Date.now()-80000},
+{name:"Aisha Bello",photo:"https://i.pravatar.cc/150?img=4",text:"We dey hire backend devs for fintech. Check jobs tab!",role:"Backend Dev",timestamp:Date.now()-60000},
+{name:"DevChat Bot",photo:"https://ui-avatars.com/api/?name=Bot&background=25D366&color=fff",text:"Welcome to DevChat! Invite 5 friends to unlock jobs section 🚀",role:"Bot",timestamp:Date.now()-40000}
+];
+const exampleJobs=[
+{title:"Need React Dev for E-commerce",company:"Tunde Store",budget:"$500",desc:"Need someone to build React shop with Paystack.",whatsapp:"2348100000007"},
+{title:"Collab: Build Fintech MVP",company:"Aisha Bello",budget:"Equity + $300",desc:"Looking for mobile dev Flutter.",whatsapp:"2348100000004"}
+];
+function adBannerHTML(){return '<div class="adsterra"><span class="text-[10px] text-gray-400">Adsterra Banner Ad</span></div>';}
+window.renderContacts=function(fbUsers){
+  var list=document.getElementById('contactsList'); 
+  if(!list) return; 
+  list.innerHTML='';
+  var combined=[].concat(fbUsers||[]).concat(exampleContacts);
+  var totalEl=document.getElementById('totalUsers');
+  if(totalEl) totalEl.textContent=combined.length;
+  var on=Math.floor(combined.length*0.7);
+  var onlineEl=document.getElementById('onlineUsers');
+  if(onlineEl) onlineEl.textContent=on;
+  var offlineEl=document.getElementById('offlineUsers');
+  if(offlineEl) offlineEl.textContent=combined.length-on;
+  var countEl=document.getElementById('contactsCount');
+  if(countEl) countEl.textContent=combined.length;
+  var landEl=document.getElementById('landingOnline');
+  if(landEl) landEl.textContent=on;
+  var chatOnEl=document.getElementById('chatOnline2');
+  if(chatOnEl) chatOnEl.textContent=on;
+  combined.forEach(function(u,i){
+    if(i>0&&i%4===0){
+      var ad=document.createElement('div'); 
+      ad.className='card'; 
+      ad.innerHTML=adBannerHTML(); 
+      list.appendChild(ad);
+    }
+    var div=document.createElement('div'); 
+    div.className='card bg-white border rounded-2xl p-3 flex gap-3 items-center';
+    div.innerHTML='<div class="relative flex-shrink-0"><img src="'+(u.photo||'https://i.pravatar.cc/150?img=9')+'" class="w-11 h-11 rounded-full object-cover"><div class="w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white absolute bottom-0 right-0"></div></div><div class="flex-1 min-w-0 overflow-hidden"><div class="font-bold text-[13px] truncate">'+u.fullName+'</div><div class="text-[11px] text-gray-500 truncate">'+u.role+' • '+(u.gigs||0)+' gigs</div><div class="text-[11px] text-gray-400 truncate">'+(u.skills||'')+'</div></div><button class="bg-black text-white text-[11px] px-3 py-1.5 rounded-full flex-shrink-0">View</button>';
+    div.onclick=function(){openModalDirect(u);}; 
+    list.appendChild(div);
+  });
+};
+window.renderChatMessages=function(messages){
+var box=document.getElementById('chatMessages'); if(!box) return; window.currentMessages=messages; box.innerHTML='';
+(messages||exampleMessages).forEach(function(m,idx){
+if(idx>0&&idx%5===0){var adWrap=document.createElement('div'); adWrap.className='w-full'; adWrap.innerHTML=adBannerHTML(); box.appendChild(adWrap);}
+var isMe=m.name==='You'; var div=document.createElement('div'); div.className='flex gap-2 w-full '+(isMe?'justify-end':'');
+if(isMe){div.innerHTML='<div class="chat-right px-3 py-2"><div class="text-[13px]">'+m.text+'</div><div class="text-[10px] text-gray-600 text-right mt-1">'+new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' ✓✓</div></div>';}
+else{div.innerHTML='<img src="'+(m.photo||'https://ui-avatars.com/api/?name='+encodeURIComponent(m.name))+'" class="w-8 h-8 rounded-full flex-shrink-0 object-cover"><div class="chat-left px-3 py-2"><div class="text-[11px] font-bold text-[#075E54] truncate">'+m.name+' • '+(m.role||'')+'</div><div class="text-[13px] mt-1">'+m.text+'</div><div class="text-[10px] text-gray-500 text-right mt-1">'+new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div></div>';}
+box.appendChild(div);
+});
+box.scrollTop=box.scrollHeight;
+};
+window.renderJobs=function(jobs){
+var box=document.getElementById('jobsList'); if(!box) return; box.innerHTML='';
+var list=(jobs&&jobs.length)?jobs:exampleJobs;
+list.forEach(function(j,i){
+if(i>0&&i%3===0){var ad=document.createElement('div'); ad.innerHTML=adBannerHTML(); box.appendChild(ad);}
+var d=document.createElement('div'); d.className='card bg-white border rounded-2xl p-3 w-full overflow-hidden';
+d.innerHTML='<h4 class="font-bold text-[13px] truncate">'+j.title+'</h4><p class="text-[11px] text-gray-500 truncate">'+(j.company||'Dev')+' • '+(j.budget||'')+'</p><p class="text-[12px] mt-2 break-words">'+(j.desc||'')+'</p><div class="mt-2 flex gap-2"><a href="https://wa.me/'+(j.whatsapp||'')+'" target="_blank" class="text-[11px] bg-green-500 text-white px-3 py-1.5 rounded-full">WhatsApp</a><a href="devchat.html" class="text-[11px] border px-3 py-1.5 rounded-full">Chat</a></div>';
+box.appendChild(d);
+});
+};
+// GIG POSTING WITH EDIT + DELETE
+window.postedGigs = JSON.parse(localStorage.getItem('myPostedGigs')||'[]');
+window.editingGigIndex = -1;
+function renderMyGigs(){
+  var box=document.getElementById('myGigsList');
+  if(!box) return;
+  box.innerHTML='';
+  if(window.postedGigs.length===0){ box.innerHTML='<p class="text-[11px] text-gray-400 mt-2">No gigs posted yet.</p>'; return; }
+  window.postedGigs.forEach(function(g,idx){
+    var d=document.createElement('div');
+    d.className='border rounded-xl p-2.5 bg-green-50 relative';
+    d.innerHTML='<div class="font-bold text-[12px] truncate pr-16">'+g.title+' - '+g.budget+'</div><div class="text-[11px] mt-1 break-words">'+g.desc+'</div>'+(g.link?'<a href="'+g.link+'" target="_blank" class="text-[10px] text-blue-600 underline break-all">'+g.link+'</a>':'')+'<div class="mt-2 flex gap-1.5"><button onclick="editGig('+idx+')" class="bg-black text-white text-[10px] px-2.5 py-1 rounded-full"><i class="fa-solid fa-pen mr-1"></i>Edit</button><button onclick="deleteGig('+idx+')" class="bg-red-500 text-white text-[10px] px-2.5 py-1 rounded-full"><i class="fa-solid fa-trash mr-1"></i>Delete</button></div>';
+    box.appendChild(d);
+  });
+}
+window.editGig=function(idx){
+  var g=window.postedGigs[idx];
+  if(!g) return;
+  document.getElementById('gigTitle').value=g.title;
+  document.getElementById('gigBudget').value=g.budget;
+  document.getElementById('gigLink').value=g.link||'';
+  document.getElementById('gigDesc').value=g.desc;
+  window.editingGigIndex=idx;
+  document.getElementById('gigSubmitBtn').textContent='Update Gig';
+  document.getElementById('gigCancelEdit').classList.remove('hidden');
+  document.getElementById('profileEditModal').scrollTop=200;
+};
+window.deleteGig=function(idx){
+  if(!confirm('Delete this gig?')) return;
+  window.postedGigs.splice(idx,1);
+  localStorage.setItem('myPostedGigs', JSON.stringify(window.postedGigs));
+  if(window.editingGigIndex===idx){ cancelGigEdit(); }
+  renderMyGigs();
+};
+window.cancelGigEdit=function(){
+  window.editingGigIndex=-1;
+  document.getElementById('postGigForm').reset();
+  document.getElementById('gigSubmitBtn').textContent='Post Gig to My Profile';
+  document.getElementById('gigCancelEdit').classList.add('hidden');
+};
+renderMyGigs();
+document.getElementById('postGigForm')?.addEventListener('submit', function(e){
+  e.preventDefault();
+  var gig={
+    title:document.getElementById('gigTitle').value,
+    budget:document.getElementById('gigBudget').value,
+    link:document.getElementById('gigLink').value,
+    desc:document.getElementById('gigDesc').value,
+    createdAt:Date.now()
+  };
+  if(window.editingGigIndex>=0){
+    window.postedGigs[window.editingGigIndex]=gig;
+    window.editingGigIndex=-1;
+    document.getElementById('gigSubmitBtn').textContent='Post Gig to My Profile';
+    document.getElementById('gigCancelEdit').classList.add('hidden');
+  } else {
+    window.postedGigs.unshift(gig);
+    if(window.pushGigToFirebase) window.pushGigToFirebase(gig);
+  }
+  localStorage.setItem('myPostedGigs', JSON.stringify(window.postedGigs));
+  renderMyGigs();
+  e.target.reset();
+  alert('Gig saved!');
+});
+window.openModalDirect=function(u){
+  document.getElementById('contactModal').classList.remove('hidden');
+  var myGigs = window.postedGigs||[];
+  var gigsHtml='';
+  if(myGigs.length>0){
+    gigsHtml='<div class="mt-4 border-t pt-3"><p class="font-black text-[12px]">🔥 Gigs on this profile:</p><div class="grid gap-2 mt-2">'+myGigs.map(function(g){ return '<div class="border rounded-xl p-2 bg-green-50"><div class="font-bold text-[12px]">'+g.title+' - '+g.budget+'</div><div class="text-[11px] mt-1">'+g.desc+'</div>'+(g.link?'<a href="'+g.link+'" target="_blank" class="text-[10px] text-blue-600 underline break-all">'+g.link+'</a>':'')+'</div>'; }).join('')+'</div></div>';
+  }
+  document.getElementById('modalContent').innerHTML='<div class="flex gap-3"><img src="'+(u.photo||'https://i.pravatar.cc/150?img=9')+'" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0"><div class="min-w-0"><h3 class="font-black text-lg truncate">'+u.fullName+'</h3><p class="text-sm text-gray-600 truncate">'+u.role+'</p></div></div><div class="mt-4 text-sm bg-gray-50 p-3 rounded-2xl border w-full overflow-hidden"><div class="truncate"><b>WhatsApp:</b> '+(u.whatsapp||'')+'</div><div class="mt-1 break-words"><b>Skills:</b> '+(u.skills||'')+'</div><div class="mt-1 break-words"><b>Bio:</b> '+(u.bio||'')+'</div></div>'+gigsHtml+'<div class="mt-4 grid gap-2"><a href="devchat.html" class="bg-black text-white py-3 rounded-full text-center font-bold">Chat in DevChat</a><a href="https://wa.me/'+u.whatsapp+'" target="_blank" class="bg-green-500 text-white py-3 rounded-full text-center font-bold">WhatsApp</a></div>';
+};
+switchTab('chat');
+renderContacts([]);
+renderChatMessages(exampleMessages);
+renderJobs([]);
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getDatabase, ref, onValue, push, get, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getDatabase(app);
+onAuthStateChanged(auth, async u=>{
+ if(!u) return;
+ const av=document.getElementById('myAvatarTop'); if(av){av.src=u.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||'Dev')}`; av.classList.remove('hidden');}
+ try{const snap=await get(ref(db,'users/'+u.uid)); if(snap.exists()){const p=snap.val(); document.getElementById('inviteCount').textContent=p.invites||0; if((p.invites||0)>=5){document.getElementById('jobsLocked').classList.add('hidden'); document.getElementById('jobsUnlocked').classList.remove('hidden'); document.getElementById('jobLockBadge').textContent='✅ Unlocked';} } const link=`${location.origin}${location.pathname.replace('index.html','')}register.html?ref=${u.uid}`; document.getElementById('inviteLink').textContent=link; localStorage.setItem('inviteLink',link);}catch(e){}
+});
+onValue(ref(db,'users'), snap=>{let a=[]; snap.forEach(c=>{a.push({...c.val(),key:c.key});}); if(a.length>0) renderContacts(a);});
+onValue(query(ref(db,'messages'),orderByChild('timestamp'),limitToLast(100)), snap=>{if(!snap.exists()) return; let m=[]; snap.forEach(c=>{m.push(c.val());}); if(m.length>0) renderChatMessages(m);});
+onValue(ref(db,'jobs'), snap=>{if(!snap.exists()) return; let j=[]; snap.forEach(c=>{j.push(c.val());}); renderJobs(j);});
+const sendBtn=document.getElementById('sendBtn'); const chatInput=document.getElementById('chatInput');
+async function sendMsg(){ if(!chatInput.value.trim()) return; try{await push(ref(db,'messages'),{name:'You',text:chatInput.value,timestamp:Date.now(),photo:'https://ui-avatars.com/api/?name=You&background=25D366&color=fff'}); chatInput.value='';}catch(e){const box=document.getElementById('chatMessages'); const div=document.createElement('div'); div.className='flex gap-2 justify-end w-full'; div.innerHTML='<div class="chat-right px-3 py-2"><div class="text-[13px]">'+chatInput.value+'</div><div class="text-[10px] text-right">✓✓</div></div>'; box.appendChild(div); box.scrollTop=box.scrollHeight; chatInput.value='';}}
+if(sendBtn) sendBtn.onclick=sendMsg; if(chatInput) chatInput.onkeydown=e=>{if(e.key==='Enter') sendMsg();};
+document.getElementById('jobForm').addEventListener('submit', async e=>{e.preventDefault(); const data={title:document.getElementById('jobTitle').value,budget:document.getElementById('jobBudget').value,desc:document.getElementById('jobDesc').value,whatsapp:'',company:'Dev',createdAt:Date.now()}; try{await push(ref(db,'jobs'),data); alert('Posted!'); e.target.reset();}catch(err){alert('Posted locally'); e.target.reset();}});
+window.pushGigToFirebase = async (gig) => {
+  try{
+    const user = auth.currentUser;
+    if(!user) return;
+    await push(ref(db, 'userGigs/'+user.uid), {
+      ...gig,
+      uid:user.uid,
+      fullName:user.displayName||'Dev',
+      photo:user.photoURL||'',
+      timestamp:Date.now()
+    });
+    await push(ref(db, 'jobs'), {
+      title:gig.title,
+      budget:gig.budget,
+      desc:gig.desc + ' | Link: ' + gig.link,
+      company:user.displayName||'Dev',
+      whatsapp: document.getElementById('editWhatsapp')?.value||'',
+      createdAt:Date.now()
+    });
+  }catch(e){ console.log(e); }
+};
+</script>
+</body>
+</html>
