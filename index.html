@@ -84,12 +84,11 @@ body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-directi
 <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow">
 <div class="logo mx-auto w-16 h-16 text-xl">DV</div>
 <h2 class="font-black text-xl mt-4">General Group Chat</h2>
-<p class="text-xs text-gray-500 mt-2"><span id="landingOnline">7</span> developers online now</p>
-<p class="text-sm text-gray-600 mt-4">Join the general chat to discuss gigs, code, and collabs with 9+ developers. WhatsApp style.</p>
+<p class="text-xs text-gray-500 mt-2"><span id="landingOnline">0</span> developers online now</p>
+<p class="text-sm text-gray-600 mt-4">Join the general chat to discuss gigs, code, and collabs with developers. WhatsApp style.</p>
 <button onclick="openGeneralChat()" class="mt-6 w-full bg-black text-white py-3.5 rounded-full font-black text-sm"><i class="fa-solid fa-comments mr-2"></i>Join General Chat</button>
 <a href="devchat.html" class="mt-3 w-full border py-3 rounded-full font-bold text-sm block text-center">Open Full Page (devchat.html)</a>
 <div class="mt-6">
-<!-- ADSTERRA AD 1 - Landing -->
 <div class="adsterra">
 <script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
 <script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script>
@@ -99,11 +98,10 @@ body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-directi
 </div>
 <div id="chatFull" class="hidden flex-1 flex-col h-full w-full">
 <div class="bg-[#F0F0F0] px-3 py-2 flex justify-between items-center border-b w-full">
-<div class="min-w-0"><p class="text-[12px] font-black truncate">General Group Chat</p><p class="text-[10px] text-gray-500 truncate"><span id="chatOnline2">7</span> online · WhatsApp style</p></div>
+<div class="min-w-0"><p class="text-[12px] font-black truncate">General Group Chat</p><p class="text-[10px] text-gray-500 truncate"><span id="chatOnline2">0</span> online · WhatsApp style</p></div>
 <button onclick="document.getElementById('chatWithDevsModal').classList.remove('hidden')" class="bg-black text-white text-[10px] px-3 py-1.5 rounded-full font-bold flex-shrink-0">Other Devs</button>
 </div>
 <div class="bg-white p-2 w-full">
-<!-- ADSTERRA AD 2 - Top of Chat -->
 <div class="adsterra">
 <script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
 <script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script>
@@ -117,8 +115,7 @@ body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-directi
 </div>
 </div>
 <div id="contactsTab" class="h-full bg-white overflow-y-auto p-3 hidden absolute inset-0 w-full">
-<div class="w-full"><p class="text-[11px] text-gray-500"><span id="contactsCount">9</span> developers · Click to chat</p>
-<!-- ADSTERRA AD 3 - Contacts Top -->
+<div class="w-full"><p class="text-[11px] text-gray-500"><span id="contactsCount">0</span> developers · Click to chat</p>
 <div class="mt-2 adsterra">
 <script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
 <script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script>
@@ -128,7 +125,6 @@ body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-directi
 </div>
 <div id="jobsTab" class="h-full bg-gray-50 overflow-y-auto p-3 hidden absolute inset-0 w-full">
 <div class="w-full">
-<!-- ADSTERRA AD 4 - Jobs Top -->
 <div class="adsterra mb-3">
 <script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
 <script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script>
@@ -140,7 +136,6 @@ body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-directi
 <p id="inviteLink" class="text-[10px] break-all text-gray-400 mt-3 bg-gray-100 p-2 rounded-lg w-full overflow-hidden"></p>
 </div>
 <div id="jobsUnlocked" class="hidden w-full">
-<!-- ADSTERRA AD 5 - Jobs Unlocked -->
 <div class="mt-3 adsterra">
 <script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
 <script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script>
@@ -185,17 +180,6 @@ renderChatMessages(window.currentMessages||exampleMessages);
 };
 window.logoutBtn=function(){localStorage.removeItem('devchat_user_logged');location.href='register.html';};
 window.copyInvite=function(){var l=localStorage.getItem('inviteLink')||location.origin+'/register.html';navigator.clipboard.writeText(l);alert('Copied: '+l);};
-const exampleContacts=[
-{fullName:"Michael Johnson",role:"Fullstack Dev",skills:"React, Node",bio:"Built 20+ startups",gigs:24,whatsapp:"2348100000001",photo:"https://i.pravatar.cc/150?img=1"},
-{fullName:"Sarah Adams",role:"Frontend Dev",skills:"Vue, Tailwind",bio:"30+ landing pages",gigs:18,whatsapp:"2348100000002",photo:"https://i.pravatar.cc/150?img=2"},
-{fullName:"David Okoro",role:"Mobile Dev",skills:"Flutter",bio:"Play Store 10k+",gigs:12,whatsapp:"2348100000003",photo:"https://i.pravatar.cc/150?img=3"},
-{fullName:"Aisha Bello",role:"Backend Dev",skills:"Python, Django",bio:"APIs at scale",gigs:15,whatsapp:"2348100000004",photo:"https://i.pravatar.cc/150?img=4"},
-{fullName:"Emeka Code",role:"Blockchain Dev",skills:"Solidity",bio:"Smart contracts",gigs:9,whatsapp:"2348100000005",photo:"https://i.pravatar.cc/150?img=5"},
-{fullName:"Grace Lee",role:"UI/UX",skills:"Figma",bio:"Design systems",gigs:22,whatsapp:"2348100000006",photo:"https://i.pravatar.cc/150?img=6"},
-{fullName:"Tunde Dev",role:"DevOps",skills:"Docker",bio:"Deploy fast",gigs:11,whatsapp:"2348100000007",photo:"https://i.pravatar.cc/150?img=7"},
-{fullName:"Zainab Musa",role:"Data Scientist",skills:"Python, ML",bio:"ML models",gigs:8,whatsapp:"2348100000008",photo:"https://i.pravatar.cc/150?img=8"},
-{fullName:"padis",role:"FullStack Developer",skills:"HTML, CSS, JavaScript with NodeJS and firebase",bio:"Fullstack",gigs:0,whatsapp:"234",photo:"https://ui-avatars.com/api/?name=padis&background=random"}
-];
 const exampleMessages=[
 {name:"Michael Johnson",photo:"https://i.pravatar.cc/150?img=1",text:"Hello guys! Who sabi React Native? I get gig for una 👋",role:"Fullstack Dev",timestamp:Date.now()-100000},
 {name:"Sarah Adams",photo:"https://i.pravatar.cc/150?img=2",text:"I dey available! Show me the job for contacts section",role:"Frontend Dev",timestamp:Date.now()-80000},
@@ -207,7 +191,7 @@ const exampleJobs=[
 {title:"Collab: Build Fintech MVP",company:"Aisha Bello",budget:"Equity + $300",desc:"Looking for mobile dev Flutter.",whatsapp:"2348100000004"}
 ];
 
-// ADSTERRA FUNCTION - This now shows real ads
+// ADSTERRA FUNCTION
 function adBannerHTML(){
   return '<div class="adsterra"><scr'+'ipt>atOptions = {\'key\' : \'50ed0ce2f2d5bcf00ac428ab929a6f99\',\'format\' : \'iframe\',\'height\' : 50,\'width\' : 320,\'params\' : {}};</scr'+'ipt><scr'+'ipt src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></scr'+'ipt></div>';
 }
@@ -216,20 +200,41 @@ window.renderContacts=function(fbUsers){
   var list=document.getElementById('contactsList'); 
   if(!list) return; 
   list.innerHTML='';
-  var combined=[].concat(fbUsers||[]).concat(exampleContacts);
+  // FIXED: REMOVED FAKE CONTACTS - ONLY REAL FIREBASE USERS
+  var combined=[].concat(fbUsers||[]);
+  
   var totalEl=document.getElementById('totalUsers');
   if(totalEl) totalEl.textContent=combined.length;
-  var on=Math.floor(combined.length*0.7);
+  
+  // FIXED: REAL ONLINE COUNT - check isOnline / lastSeen
+  var onlineCount=0;
+  combined.forEach(function(u){
+    let isOnline=false;
+    if(u.isOnline===true || u.status==="online") isOnline=true;
+    else if(u.lastSeen){
+      const diff=Date.now() - new Date(u.lastSeen).getTime();
+      if(diff < 5*60*1000) isOnline=true;
+    }
+    if(isOnline) onlineCount++;
+  });
+  
+  var offlineCount=combined.length-onlineCount;
   var onlineEl=document.getElementById('onlineUsers');
-  if(onlineEl) onlineEl.textContent=on;
+  if(onlineEl) onlineEl.textContent=onlineCount;
   var offlineEl=document.getElementById('offlineUsers');
-  if(offlineEl) offlineEl.textContent=combined.length-on;
+  if(offlineEl) offlineEl.textContent=offlineCount;
   var countEl=document.getElementById('contactsCount');
   if(countEl) countEl.textContent=combined.length;
   var landEl=document.getElementById('landingOnline');
-  if(landEl) landEl.textContent=on;
+  if(landEl) landEl.textContent=onlineCount;
   var chatOnEl=document.getElementById('chatOnline2');
-  if(chatOnEl) chatOnEl.textContent=on;
+  if(chatOnEl) chatOnEl.textContent=onlineCount;
+  
+  if(combined.length===0){
+    list.innerHTML='<p class="text-center text-gray-400 text-sm mt-10">No developers yet. Invite friends!</p>';
+    return;
+  }
+
   combined.forEach(function(u,i){
     if(i>0&&i%4===0){
       var ad=document.createElement('div'); 
@@ -237,9 +242,19 @@ window.renderContacts=function(fbUsers){
       ad.innerHTML=adBannerHTML(); 
       list.appendChild(ad);
     }
+    // FIXED: REAL ONLINE CHECK PER USER
+    let isOnline=false;
+    if(u.isOnline===true || u.status==="online") isOnline=true;
+    else if(u.lastSeen){
+      const diff=Date.now() - new Date(u.lastSeen).getTime();
+      if(diff < 5*60*1000) isOnline=true;
+    }
+    const dotColor=isOnline?'bg-green-500':'bg-gray-400';
+    const dotText=isOnline?'Online':'Offline';
+    
     var div=document.createElement('div'); 
     div.className='card bg-white border rounded-2xl p-3 flex gap-3 items-center';
-    div.innerHTML='<div class="relative flex-shrink-0"><img src="'+(u.photo||'https://i.pravatar.cc/150?img=9')+'" class="w-11 h-11 rounded-full object-cover"><div class="w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white absolute bottom-0 right-0"></div></div><div class="flex-1 min-w-0 overflow-hidden"><div class="font-bold text-[13px] truncate">'+u.fullName+'</div><div class="text-[11px] text-gray-500 truncate">'+u.role+' • '+(u.gigs||0)+' gigs</div><div class="text-[11px] text-gray-400 truncate">'+(u.skills||'')+'</div></div><button class="bg-black text-white text-[11px] px-3 py-1.5 rounded-full flex-shrink-0">View</button>';
+    div.innerHTML='<div class="relative flex-shrink-0"><img src="'+(u.photo||u.photoURL||'https://i.pravatar.cc/150?img=9')+'" class="w-11 h-11 rounded-full object-cover"><div class="w-2.5 h-2.5 '+dotColor+' rounded-full border-2 border-white absolute bottom-0 right-0"></div></div><div class="flex-1 min-w-0 overflow-hidden"><div class="font-bold text-[13px] truncate">'+(u.fullName||'User')+'</div><div class="text-[11px] text-gray-500 truncate">'+(u.role||'')+' • '+dotText+'</div><div class="text-[11px] text-gray-400 truncate">'+(u.skills||'')+'</div></div><button class="bg-black text-white text-[11px] px-3 py-1.5 rounded-full flex-shrink-0">View</button>';
     div.onclick=function(){openModalDirect(u);}; 
     list.appendChild(div);
   });
@@ -334,7 +349,13 @@ window.openModalDirect=function(u){
   if(myGigs.length>0){
     gigsHtml='<div class="mt-4 border-t pt-3"><p class="font-black text-[12px]">🔥 Gigs on this profile:</p><div class="grid gap-2 mt-2">'+myGigs.map(function(g){ return '<div class="border rounded-xl p-2 bg-green-50"><div class="font-bold text-[12px]">'+g.title+' - '+g.budget+'</div><div class="text-[11px] mt-1">'+g.desc+'</div>'+(g.link?'<a href="'+g.link+'" target="_blank" class="text-[10px] text-blue-600 underline break-all">'+g.link+'</a>':'')+'</div>'; }).join('')+'</div></div>';
   }
-  document.getElementById('modalContent').innerHTML='<div class="flex gap-3"><img src="'+(u.photo||'https://i.pravatar.cc/150?img=9')+'" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0"><div class="min-w-0"><h3 class="font-black text-lg truncate">'+u.fullName+'</h3><p class="text-sm text-gray-600 truncate">'+u.role+'</p></div></div><div class="mt-4 text-sm bg-gray-50 p-3 rounded-2xl border w-full overflow-hidden"><div class="truncate"><b>WhatsApp:</b> '+(u.whatsapp||'')+'</div><div class="mt-1 break-words"><b>Skills:</b> '+(u.skills||'')+'</div><div class="mt-1 break-words"><b>Bio:</b> '+(u.bio||'')+'</div></div>'+gigsHtml+'<div class="mt-4 grid gap-2"><a href="devchat.html" class="bg-black text-white py-3 rounded-full text-center font-bold">Chat in DevChat</a><a href="https://wa.me/'+u.whatsapp+'" target="_blank" class="bg-green-500 text-white py-3 rounded-full text-center font-bold">WhatsApp</a></div>';
+  // FIXED: SEND ALL CONTACT DETAILS TO chatting.html
+  var chatUid = u.key || u.uid || u.whatsapp || '';
+  var chatName = encodeURIComponent(u.fullName||'User');
+  var chatPhoto = encodeURIComponent(u.photo||u.photoURL||'https://ui-avatars.com/api/?name='+encodeURIComponent(u.fullName||'User'));
+  var chattingUrl = 'chatting.html?with='+chatUid+'&name='+chatName+'&photo='+chatPhoto;
+  
+  document.getElementById('modalContent').innerHTML='<div class="flex gap-3"><img src="'+(u.photo||u.photoURL||'https://i.pravatar.cc/150?img=9')+'" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0"><div class="min-w-0"><h3 class="font-black text-lg truncate">'+(u.fullName||'User')+'</h3><p class="text-sm text-gray-600 truncate">'+(u.role||'')+'</p></div></div><div class="mt-4 text-sm bg-gray-50 p-3 rounded-2xl border w-full overflow-hidden"><div class="truncate"><b>WhatsApp:</b> '+(u.whatsapp||'')+'</div><div class="mt-1 break-words"><b>Skills:</b> '+(u.skills||'')+'</div><div class="mt-1 break-words"><b>Bio:</b> '+(u.bio||'')+'</div></div>'+gigsHtml+'<div class="mt-4 grid gap-2"><a href="'+chattingUrl+'" class="bg-black text-white py-3 rounded-full text-center font-bold">Chat in DevChat</a><a href="https://wa.me/'+(u.whatsapp||'')+'" target="_blank" class="bg-green-500 text-white py-3 rounded-full text-center font-bold">WhatsApp</a></div>';
 };
 switchTab('chat');
 renderContacts([]);
@@ -350,17 +371,13 @@ const app=initializeApp(firebaseConfig);
 const auth=getAuth(app); 
 const db=getDatabase(app);
 
-// === AUTH GUARD - REDIRECT IF NOT LOGGED IN ===
 onAuthStateChanged(auth, async u=>{
  if(!u){
-   // User not logged in, redirect to register.html
-   // Avoid redirect loop if already on register page
    if(!window.location.pathname.includes('register.html') && !window.location.pathname.includes('login.html')){
      window.location.replace('register.html');
    }
    return;
  }
- // User is logged in - continue normal flow
  const av=document.getElementById('myAvatarTop'); 
  if(av){av.src=u.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||'Dev')}`; av.classList.remove('hidden');}
  try{

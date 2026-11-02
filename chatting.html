@@ -1,27 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Direct Chat</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Direct Chat - DevChat</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh;background:#E5DDD5}
+.chat-left{background:white;border-radius:0 16px 16px 16px;max-width:78%;word-break:break-word}
+.chat-right{background:#DCF8C6;border-radius:16px 0 16px 16px;max-width:78%;word-break:break-word}
+</style>
 </head>
-<body class="bg-[#E5DDD5] h-screen flex flex-col">
-<div class="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3"><a href="index.html" class="w-8 h-8 bg-black rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></a><div style="background:linear-gradient(135deg,#25D366,#128C7E);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800">DV</div><div class="flex-1"><div id="chatName" class="font-bold">Developer</div><div class="text-[11px] opacity-80">Direct chat - No payment</div></div><a id="waLink" target="_blank" class="bg-green-500 px-3 py-1.5 rounded-full text-xs font-bold"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></div>
-<div id="directMessages" class="flex-1 overflow-y-auto p-4 space-y-3" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')"></div>
-<div class="bg-[#F0F0F0] p-3 flex gap-2"><input id="dmInput" placeholder="Type a message..." class="flex-1 rounded-full px-5 py-2.5 focus:outline-none"><button id="dmSend" class="bg-black text-white w-10 h-10 rounded-full"><i class="fa-solid fa-paper-plane"></i></button></div>
+<body>
+<!-- TOP HEADER SHOWS UNIQUE CONTACT -->
+<div class="bg-[#075E54] text-white px-3 py-3 flex items-center gap-3 w-full">
+<a href="index.html" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-arrow-left text-xs"></i></a>
+<img id="contactPhoto" src="https://ui-avatars.com/api/?name=User" class="w-10 h-10 rounded-full object-cover border-2 border-white flex-shrink-0">
+<div class="flex-1 min-w-0 overflow-hidden">
+<div id="contactName" class="font-bold text-[14px] truncate">Loading...</div>
+<div id="contactStatus" class="text-[11px] opacity-80 truncate">Private chat • End-to-end</div>
+</div>
+<a id="waLink" target="_blank" class="bg-green-500 px-3 py-1.5 rounded-full text-[11px] font-bold flex-shrink-0"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+</div>
+
+<!-- PRIVATE MESSAGES ONLY -->
+<div id="directMessages" class="flex-1 overflow-y-auto p-3 space-y-3 w-full" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');background-size:400px"></div>
+
+<div class="bg-[#F0F0F0] p-2 flex gap-2 items-center w-full border-t">
+<input id="dmInput" placeholder="Type a message..." class="flex-1 min-w-0 rounded-full px-4 py-2.5 border text-sm focus:outline-none">
+<button id="dmSend" class="bg-[#075E54] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
-const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637",measurementId:"G-C170BY4MDK"};
-const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getDatabase(app);
-const params=new URLSearchParams(location.search);const withUser=params.get('with');const withName=params.get('name')||withUser;
-document.getElementById('chatName').textContent=decodeURIComponent(withName);document.getElementById('waLink').href=`https://wa.me/${withUser}?text=Hi%20from%20DevChat`;
-let currentUser=null;onAuthStateChanged(auth, u=>{currentUser=u;if(!u)location.href='register.html';else loadDirect();});
-const chatId=()=>{if(!currentUser)return null;return [currentUser.uid, withUser].sort().join('_');};
-function loadDirect(){const id=chatId();if(!id)return;onValue(ref(db,'directChats/'+id), snap=>{const box=document.getElementById('directMessages');box.innerHTML='';snap.forEach(c=>{const m=c.val();const isMe=m.uid===currentUser.uid;const div=document.createElement('div');div.className=`flex ${isMe?'justify-end':'justify-start'}`;div.innerHTML=`<div class="${isMe?'bg-[#DCF8C6]':'bg-white'} px-3 py-2 rounded-2xl max-w-[75%] text-sm"><div>${m.text}</div><div class="text-[10px] text-gray-500 text-right">${new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;box.appendChild(div);});box.scrollTop=box.scrollHeight;});}
-async function sendDM(){const input=document.getElementById('dmInput');if(!input.value.trim())return;const id=chatId();await push(ref(db,'directChats/'+id),{uid:currentUser.uid,text:input.value,timestamp:Date.now()});input.value='';}
-document.getElementById('dmSend').onclick=sendDM;document.getElementById('dmInput').onkeydown=e=>{if(e.key==='Enter')sendDM();};
+import { getDatabase, ref, onValue, push, get, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+
+const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637"};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getDatabase(app);
+
+const params=new URLSearchParams(location.search);
+const withUid=params.get('with');
+const withNameParam=params.get('name');
+
+// Header elements
+const contactNameEl=document.getElementById('contactName');
+const contactPhotoEl=document.getElementById('contactPhoto');
+const contactStatusEl=document.getElementById('contactStatus');
+const waLinkEl=document.getElementById('waLink');
+
+// Show name from URL immediately
+if(withNameParam){
+  contactNameEl.textContent=decodeURIComponent(withNameParam);
+}
+
+let currentUser=null;
+let contactData=null;
+
+onAuthStateChanged(auth, async (u)=>{
+  if(!u){ location.href='register.html'; return; }
+  currentUser=u;
+  
+  // Load contact info from Firebase to show image, role, online
+  if(withUid){
+    try{
+      const snap=await get(ref(db,'users/'+withUid));
+      if(snap.exists()){
+        contactData=snap.val();
+        contactNameEl.textContent=contactData.fullName||decodeURIComponent(withNameParam||'Developer');
+        contactPhotoEl.src=contactData.photo||contactData.photoURL||'https://ui-avatars.com/api/?name='+encodeURIComponent(contactData.fullName||'User');
+        
+        // Real online status
+        let isOnline=false;
+        if(contactData.isOnline===true || contactData.status==="online") isOnline=true;
+        else if(contactData.lastSeen){
+          const diff=Date.now() - new Date(contactData.lastSeen).getTime();
+          if(diff < 5*60*1000) isOnline=true;
+        }
+        contactStatusEl.textContent=isOnline?'● Online • Private chat':'● Offline • Private chat • Tap to view profile';
+        waLinkEl.href=`https://wa.me/${contactData.whatsapp||''}?text=Hi%20from%20DevChat`;
+      }
+    }catch(e){ console.log(e); }
+  }
+  
+  loadPrivateChat();
+});
+
+function getChatId(a,b){
+  if(!a||!b) return null;
+  return [a,b].sort().join('_');
+}
+
+function loadPrivateChat(){
+  const chatId=getChatId(currentUser.uid, withUid);
+  if(!chatId) return;
+  
+  // PRIVATE CHAT PATH - ONLY FOR THESE 2 USERS
+  const chatRef=ref(db,'directChats/'+chatId);
+  
+  onValue(chatRef, (snap)=>{
+    const box=document.getElementById('directMessages');
+    box.innerHTML='';
+    
+    if(!snap.exists()){
+      box.innerHTML='<div class="text-center mt-20"><div class="bg-white inline-block px-4 py-2 rounded-full text-xs text-gray-500 shadow">This is a private chat between you and '+contactNameEl.textContent+'. No one else can see it. 🔒</div></div>';
+      return;
+    }
+    
+    snap.forEach(child=>{
+      const m=child.val();
+      const isMe=m.uid===currentUser.uid || m.senderId===currentUser.uid;
+      const div=document.createElement('div');
+      div.className=`flex w-full ${isMe?'justify-end':'justify-start'}`;
+      
+      const time=new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      
+      if(isMe){
+        div.innerHTML=`<div class="chat-right px-3 py-2"><div class="text-[13px]">${m.text}</div><div class="text-[10px] text-gray-600 text-right mt-1">${time} ✓✓</div></div>`;
+      } else {
+        div.innerHTML=`<div class="flex gap-2"><img src="${contactPhotoEl.src}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover"><div class="chat-left px-3 py-2"><div class="text-[13px]">${m.text}</div><div class="text-[10px] text-gray-500 text-right mt-1">${time}</div></div></div>`;
+      }
+      box.appendChild(div);
+    });
+    box.scrollTop=box.scrollHeight;
+  });
+}
+
+async function sendDM(){
+  const input=document.getElementById('dmInput');
+  const text=input.value.trim();
+  if(!text || !currentUser || !withUid) return;
+  
+  const chatId=getChatId(currentUser.uid, withUid);
+  if(!chatId) return;
+  
+  // PUSH TO PRIVATE PATH ONLY
+  await push(ref(db,'directChats/'+chatId),{
+    uid:currentUser.uid,
+    senderId:currentUser.uid,
+    receiverId:withUid,
+    text:text,
+    timestamp:Date.now()
+  });
+  
+  input.value='';
+}
+
+document.getElementById('dmSend').onclick=sendDM;
+document.getElementById('dmInput').onkeydown=e=>{if(e.key==='Enter')sendDM();};
 </script>
 </body>
 </html>
