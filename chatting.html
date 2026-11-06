@@ -6,151 +6,129 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh;background:#E5DDD5}
+*{box-sizing:border-box} html,body{margin:0;padding:0;width:100%;overflow-x:hidden}
+body{font-family:sans-serif;height:100vh;height:100dvh;display:flex;flex-direction:column;background:#E5DDD5}
 .chat-left{background:white;border-radius:0 16px 16px 16px;max-width:78%;word-break:break-word}
 .chat-right{background:#DCF8C6;border-radius:16px 0 16px 16px;max-width:78%;word-break:break-word}
+.adsterra{width:100%;background:white;border:1px solid #eee;display:flex;align-items:center;justify-content:center;min-height:60px;border-radius:12px;overflow:hidden}
+.reply-quote{background:rgba(0,0,0,0.08);border-left:3px solid #075E54;padding:4px 8px;border-radius:6px;font-size:11px;margin-bottom:4px}
+.reply-quote b{display:block;color:#075E54}
+.swipe-msg{transition:transform .2s ease;touch-action:pan-y;position:relative}
+.reply-bar{display:none}
+.react-picker{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:white;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,.25);padding:5px 8px;display:flex;gap:6px;z-index:20;white-space:nowrap}
+.react-picker span{font-size:20px;cursor:pointer}
+.reactions{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.reaction-badge{background:white;border:1px solid #ddd;border-radius:12px;padding:1px 6px;font-size:11px}
+.react-btn{opacity:.6;font-size:11px;margin-left:4px;cursor:pointer}
 </style>
 </head>
 <body>
-<!-- TOP HEADER SHOWS UNIQUE CONTACT -->
-<div class="bg-[#075E54] text-white px-3 py-3 flex items-center gap-3 w-full">
+<div class="bg-[#075E54] text-white px-3 py-2.5 flex justify-between items-center w-full">
+<div class="flex items-center gap-2 min-w-0">
 <a href="index.html" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-arrow-left text-xs"></i></a>
-<img id="contactPhoto" src="https://ui-avatars.com/api/?name=User" class="w-10 h-10 rounded-full object-cover border-2 border-white flex-shrink-0">
-<div class="flex-1 min-w-0 overflow-hidden">
-<div id="contactName" class="font-bold text-[14px] truncate">Loading...</div>
-<div id="contactStatus" class="text-[11px] opacity-80 truncate">Private chat • End-to-end</div>
+<img id="contactPhoto" src="https://ui-avatars.com/api/?name=User" class="w-8 h-8 rounded-full object-cover border-2 border-white flex-shrink-0">
+<div class="min-w-0"><div id="contactName" class="font-black text-[15px] truncate">Loading...</div><div id="contactStatus" class="text-[10px] opacity-80 truncate">Private chat • End-to-end</div></div>
 </div>
 <a id="waLink" target="_blank" class="bg-green-500 px-3 py-1.5 rounded-full text-[11px] font-bold flex-shrink-0"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
 </div>
-
-<!-- PRIVATE MESSAGES ONLY -->
+<div class="bg-white p-2 w-full border-b"><div class="adsterra"><script>atOptions = {'key' : '50ed0ce2f2d5bcf00ac428ab929a6f99','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script><script src="https://bicea.org/22/50ed0ce2f2d5bcf00ac428ab929a6f99"></script></div></div>
 <div id="directMessages" class="flex-1 overflow-y-auto p-3 space-y-3 w-full" style="background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');background-size:400px"></div>
-
+<div id="replyBar" class="reply-bar bg-white px-3 py-2 border-t flex justify-between items-center w-full"><div class="min-w-0 flex-1"><div class="text-[11px] font-bold text-[#075E54]">Replying to <span id="replyToName"></span></div><div id="replyToText" class="text-[12px] text-gray-600 truncate"></div></div><button id="cancelReply" class="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0 ml-2"><i class="fa-solid fa-xmark text-xs"></i></button></div>
 <div class="bg-[#F0F0F0] p-2 flex gap-2 items-center w-full border-t">
 <input id="dmInput" placeholder="Type a message..." class="flex-1 min-w-0 rounded-full px-4 py-2.5 border text-sm focus:outline-none">
 <button id="dmSend" class="bg-[#075E54] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-paper-plane text-sm"></i></button>
 </div>
-
+<script>
+window.myUid = localStorage.getItem('devchat_uid') || '';
+window.currentUserName = localStorage.getItem('devchat_name') || 'You';
+let replyTo=null; let lastDMs=[];
+function setReply(m){ replyTo=m; document.getElementById('replyToName').textContent=m.name||m.senderName||'User'; document.getElementById('replyToText').textContent=m.text; document.getElementById('replyBar').style.display='flex'; document.getElementById('dmInput').focus(); }
+document.getElementById('cancelReply').onclick=function(){ replyTo=null; document.getElementById('replyBar').style.display='none'; };
+function showReactPicker(bubble,m){ document.querySelectorAll('.react-picker').forEach(e=>e.remove()); var p=document.createElement('div'); p.className='react-picker'; p.innerHTML='<span>❤️</span><span>😂</span><span>👍</span><span>🔥</span><span>😮</span><span>😢</span>'; p.querySelectorAll('span').forEach(s=>{ s.onclick=(e)=>{e.stopPropagation(); addReaction(m,s.textContent); p.remove();}; }); bubble.appendChild(p); setTimeout(()=>{document.addEventListener('click',function h(){p.remove();document.removeEventListener('click',h);});},100); }
+function addReaction(m,emoji){ if(!m.reactions) m.reactions={}; let k=window.myUid||window.currentUserName; if(m.reactions[k]===emoji) delete m.reactions[k]; else m.reactions[k]=emoji; if(m._key && window.saveReaction) window.saveReaction(m._key,k,m.reactions[k]||null); renderDMs(lastDMs); }
+function reactionsHTML(m){ if(!m.reactions) return ''; var counts={}; Object.values(m.reactions).forEach(e=>{counts[e]=(counts[e]||0)+1;}); var h='<div class="reactions">'; for(var e in counts){h+='<span class="reaction-badge">'+e+' '+counts[e]+'</span>';} h+='</div>'; return h; }
+function renderDMs(messages){
+  lastDMs=messages||[]; var box=document.getElementById('directMessages'); if(!box) return; box.innerHTML='';
+  if(lastDMs.length===0){ box.innerHTML='<div class="text-center mt-20"><div class="bg-white inline-block px-4 py-2 rounded-full text-xs text-gray-500 shadow">This is a private chat. No one else can see it. 🔒</div></div>'; return; }
+  lastDMs.forEach(function(m){
+    // UID RULE ONLY
+    var isMe = window.myUid && m.uid && String(m.uid)===String(window.myUid);
+    var div=document.createElement('div'); div.className='flex gap-2 w-full '+(isMe?'justify-end':'');
+    var inner=document.createElement('div'); inner.className='swipe-msg flex gap-2 w-full '+(isMe?'justify-end flex-row-reverse':''); inner.style.maxWidth='100%';
+    var quote=''; if(m.replyTo) quote='<div class="reply-quote"><b>'+m.replyTo.name+'</b>'+m.replyTo.text+'</div>';
+    var time=new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    var bubble='';
+    if(isMe){ bubble='<div class="chat-right px-3 py-2 relative">'+quote+'<div class="text-[13px]">'+m.text+'</div>'+reactionsHTML(m)+'<div class="text-[10px] text-gray-600 text-right mt-1">'+time+' ✓✓ <span class="react-btn" data-react="1">😊</span></div></div>'; }
+    else{ bubble='<img src="'+(document.getElementById('contactPhoto').src)+'" class="w-8 h-8 rounded-full flex-shrink-0 object-cover"><div class="chat-left px-3 py-2 relative">'+quote+'<div class="text-[13px] mt-1">'+m.text+'</div>'+reactionsHTML(m)+'<div class="text-[10px] text-gray-500 text-right mt-1">'+time+' <span class="react-btn" data-react="1">😊</span></div></div>'; }
+    inner.innerHTML=bubble;
+    var rb=inner.querySelector('[data-react]'); if(rb) rb.onclick=(e)=>{e.stopPropagation(); showReactPicker(rb.parentElement,m);};
+    let pt=null; inner.addEventListener('touchstart',e=>{pt=setTimeout(()=>showReactPicker(inner.querySelector('.chat-left,.chat-right')||inner,m),500);},{passive:true}); inner.addEventListener('touchend',()=>clearTimeout(pt),{passive:true});
+    let sx=0,cx=0,sw=false; inner.addEventListener('touchstart',e=>{sx=e.touches[0].clientX; sw=true;},{passive:true}); inner.addEventListener('touchmove',e=>{if(!sw) return; cx=e.touches[0].clientX-sx; if(cx>0&&cx<80) inner.style.transform='translateX('+cx+'px)';},{passive:true}); inner.addEventListener('touchend',e=>{sw=false; if(cx>45) setReply(m); inner.style.transform='translateX(0px)'; cx=0;}); inner.addEventListener('dblclick',()=>setReply(m));
+    div.appendChild(inner); box.appendChild(div);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import { getDatabase, ref, onValue, push, get, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
-
+import { getDatabase, ref, onValue, push, get, set, remove } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 const firebaseConfig={apiKey:"AIzaSyD1XfAONBJW_XMV_55PMnySMb4wQ8rKywc",authDomain:"devchat-52024.firebaseapp.com",databaseURL:"https://devchat-52024-default-rtdb.firebaseio.com",projectId:"devchat-52024",storageBucket:"devchat-52024.firebasestorage.app",messagingSenderId:"906277143318",appId:"1:906277143318:web:2d81125db5ef04f3a44637"};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getDatabase(app);
-
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getDatabase(app);
 const params=new URLSearchParams(location.search);
-const withUid=params.get('with');
-const withNameParam=params.get('name');
-
-// Header elements
-const contactNameEl=document.getElementById('contactName');
-const contactPhotoEl=document.getElementById('contactPhoto');
-const contactStatusEl=document.getElementById('contactStatus');
-const waLinkEl=document.getElementById('waLink');
-
-// Show name from URL immediately
-if(withNameParam){
-  contactNameEl.textContent=decodeURIComponent(withNameParam);
+const withUid=params.get('with'); const withNameParam=params.get('name');
+const contactNameEl=document.getElementById('contactName'); const contactPhotoEl=document.getElementById('contactPhoto'); const contactStatusEl=document.getElementById('contactStatus'); const waLinkEl=document.getElementById('waLink');
+const AGENT_UID='devchat_agent';
+const AGENT_NAME='DevChat Agent';
+const AGENT_PHOTO='https://ui-avatars.com/api/?name=DevChat+Agent&background=075E54&color=fff';
+if(withNameParam) contactNameEl.textContent=decodeURIComponent(withNameParam);
+if(params.get('photo')) contactPhotoEl.src=decodeURIComponent(params.get('photo'));
+let currentUser=null; let contactData=null;
+window.saveReaction=async(msgKey,userKey,emoji)=>{ try{ const chatId=getChatId(currentUser.uid,withUid); if(!emoji) await remove(ref(db,'directChats/'+chatId+'/'+msgKey+'/reactions/'+userKey)); else await set(ref(db,'directChats/'+chatId+'/'+msgKey+'/reactions/'+userKey),emoji);}catch(e){} };
+function getChatId(a,b){ return [a,b].sort().join('_'); }
+function agentReply(userText){
+  const t=userText.toLowerCase();
+  if(t.includes('hi')||t.includes('hello')||t.includes('hey')) return 'Hi again! 👋 Welcome to DevChat. I am here to help you. Ask me about Jobs, Invites, or how to collaborate.';
+  if(t.includes('job')||t.includes('work')||t.includes('gig')||t.includes('freelance')) return '💼 Jobs on DevChat: Go to Jobs tab. BUT first you must unlock it. You need to invite 5 developers to DevChat. Share your invite link from Jobs tab. Once you invite 5, Jobs unlocks and you can post & apply for gigs, freelance work, collabs. Want me to explain how to invite?';
+  if(t.includes('invite')||t.includes('unlock')||t.includes('5')) return '🔓 To unlock Jobs: 1) Go to Jobs tab 2) Copy your Invite Link 3) Share to 5 dev friends on WhatsApp/Telegram 4) When they register with your link, your count goes up. At 5/5, Jobs unlocks automatically! Your friends also get DevChat Agent like me.';
+  if(t.includes('what')&&t.includes('devchat')) return 'DevChat is the home for ALL developers & IT workers. 💬 General Chat to talk code, 👥 Contacts to find devs, ✉️ Messages for private chats, 💼 Jobs for freelance gigs. You can post your own gig on your Profile too!';
+  if(t.includes('collab')||t.includes('collaborate')||t.includes('project')) return '🤝 To collaborate: Go to Contacts, click any developer, tap View, then Chat in DevChat. You can also post in General Chat: "I need a React dev for a project" - someone will reply. Post your gig on Profile to attract collabs.';
+  if(t.includes('how')&&t.includes('use')) return 'How to use DevChat: 1) Complete your Profile (role, skills, WhatsApp) 2) Join General Chat 3) Browse Contacts & message devs 4) Invite 5 friends to unlock Jobs 5) Post your gig. That is it! 🚀';
+  if(t.includes('thank')) return 'You are welcome! 🙏 I am always here. Invite 5 friends to unlock Jobs and start earning. Need help with anything else?';
+  if(t.includes('money')||t.includes('earn')||t.includes('pay')) return '💰 To earn on DevChat: Post a gig on your Profile (e.g. "I will build website for $100"), apply for Jobs after unlocking, and collaborate on paid projects. Make sure your WhatsApp is in your profile so clients can reach you.';
+  return 'Thanks for messaging me! 🙌 DevChat is for developers to Chat, Collaborate & Get Jobs. Type "Jobs" to learn how to unlock Jobs, type "Invite" to learn about inviting 5 friends, or type "Collab" to learn collaboration.';
 }
-
-let currentUser=null;
-let contactData=null;
-
 onAuthStateChanged(auth, async (u)=>{
   if(!u){ location.href='register.html'; return; }
-  currentUser=u;
-  
-  // Load contact info from Firebase to show image, role, online
-  if(withUid){
-    try{
-      const snap=await get(ref(db,'users/'+withUid));
-      if(snap.exists()){
-        contactData=snap.val();
-        contactNameEl.textContent=contactData.fullName||decodeURIComponent(withNameParam||'Developer');
-        contactPhotoEl.src=contactData.photo||contactData.photoURL||'https://ui-avatars.com/api/?name='+encodeURIComponent(contactData.fullName||'User');
-        
-        // Real online status
-        let isOnline=false;
-        if(contactData.isOnline===true || contactData.status==="online") isOnline=true;
-        else if(contactData.lastSeen){
-          const diff=Date.now() - new Date(contactData.lastSeen).getTime();
-          if(diff < 5*60*1000) isOnline=true;
-        }
-        contactStatusEl.textContent=isOnline?'● Online • Private chat':'● Offline • Private chat • Tap to view profile';
-        waLinkEl.href=`https://wa.me/${contactData.whatsapp||''}?text=Hi%20from%20DevChat`;
-      }
-    }catch(e){ console.log(e); }
+  currentUser=u; window.myUid=u.uid; localStorage.setItem('devchat_uid',u.uid); window.currentUserName=u.displayName||(u.email?u.email.split('@')[0]:'You'); localStorage.setItem('devchat_name',window.currentUserName);
+  if(withUid===AGENT_UID){ contactNameEl.textContent=AGENT_NAME; contactPhotoEl.src=AGENT_PHOTO; contactStatusEl.textContent='● Online • Official Agent'; waLinkEl.style.display='none'; }
+  else if(withUid){
+    try{ const snap=await get(ref(db,'users/'+withUid)); if(snap.exists()){ contactData=snap.val(); contactNameEl.textContent=contactData.fullName||decodeURIComponent(withNameParam||'Developer'); contactPhotoEl.src=contactData.photo||contactData.photoURL||'https://ui-avatars.com/api/?name='+encodeURIComponent(contactData.fullName||'User'); let isOnline=false; if(contactData.isOnline===true||contactData.status==="online") isOnline=true; else if(contactData.lastSeen){ const diff=Date.now()-new Date(contactData.lastSeen).getTime(); if(diff<5*60*1000) isOnline=true; } contactStatusEl.textContent=isOnline?'● Online • Private chat':'● Offline • Private chat'; waLinkEl.href=`https://wa.me/${contactData.whatsapp||''}?text=Hi%20from%20DevChat`; } }catch(e){ console.log(e); }
   }
-  
   loadPrivateChat();
 });
-
-function getChatId(a,b){
-  if(!a||!b) return null;
-  return [a,b].sort().join('_');
-}
-
 function loadPrivateChat(){
-  const chatId=getChatId(currentUser.uid, withUid);
-  if(!chatId) return;
-  
-  // PRIVATE CHAT PATH - ONLY FOR THESE 2 USERS
-  const chatRef=ref(db,'directChats/'+chatId);
-  
-  onValue(chatRef, (snap)=>{
-    const box=document.getElementById('directMessages');
-    box.innerHTML='';
-    
-    if(!snap.exists()){
-      box.innerHTML='<div class="text-center mt-20"><div class="bg-white inline-block px-4 py-2 rounded-full text-xs text-gray-500 shadow">This is a private chat between you and '+contactNameEl.textContent+'. No one else can see it. 🔒</div></div>';
-      return;
-    }
-    
-    snap.forEach(child=>{
-      const m=child.val();
-      const isMe=m.uid===currentUser.uid || m.senderId===currentUser.uid;
-      const div=document.createElement('div');
-      div.className=`flex w-full ${isMe?'justify-end':'justify-start'}`;
-      
-      const time=new Date(m.timestamp||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      
-      if(isMe){
-        div.innerHTML=`<div class="chat-right px-3 py-2"><div class="text-[13px]">${m.text}</div><div class="text-[10px] text-gray-600 text-right mt-1">${time} ✓✓</div></div>`;
-      } else {
-        div.innerHTML=`<div class="flex gap-2"><img src="${contactPhotoEl.src}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover"><div class="chat-left px-3 py-2"><div class="text-[13px]">${m.text}</div><div class="text-[10px] text-gray-500 text-right mt-1">${time}</div></div></div>`;
-      }
-      box.appendChild(div);
-    });
-    box.scrollTop=box.scrollHeight;
+  const chatId=getChatId(currentUser.uid, withUid); if(!chatId) return;
+  onValue(ref(db,'directChats/'+chatId), (snap)=>{
+    let msgs=[]; if(snap.exists()){ snap.forEach(child=>{ let v=child.val(); v._key=child.key; msgs.push(v); }); }
+    msgs.sort((a,b)=>a.timestamp-b.timestamp); renderDMs(msgs);
   });
 }
-
 async function sendDM(){
-  const input=document.getElementById('dmInput');
-  const text=input.value.trim();
-  if(!text || !currentUser || !withUid) return;
-  
+  const input=document.getElementById('dmInput'); const text=input.value.trim(); if(!text||!currentUser||!withUid) return;
   const chatId=getChatId(currentUser.uid, withUid);
-  if(!chatId) return;
-  
-  // PUSH TO PRIVATE PATH ONLY
-  await push(ref(db,'directChats/'+chatId),{
-    uid:currentUser.uid,
-    senderId:currentUser.uid,
-    receiverId:withUid,
-    text:text,
-    timestamp:Date.now()
-  });
-  
+  let msg={uid:currentUser.uid,senderId:currentUser.uid,receiverId:withUid,name:window.currentUserName,text:text,timestamp:Date.now(),photo:currentUser.photoURL||''};
+  if(replyTo){ msg.replyTo={name:replyTo.name||'User',text:replyTo.text}; replyTo=null; document.getElementById('replyBar').style.display='none'; }
+  await push(ref(db,'directChats/'+chatId),msg);
   input.value='';
+  // AGENT AUTO REPLY
+  if(withUid===AGENT_UID){
+    setTimeout(async()=>{
+      await push(ref(db,'directChats/'+chatId),{uid:AGENT_UID,senderId:AGENT_UID,receiverId:currentUser.uid,name:AGENT_NAME,text:agentReply(text),timestamp:Date.now()+1000,photo:AGENT_PHOTO});
+    },1200);
+  }
 }
-
-document.getElementById('dmSend').onclick=sendDM;
-document.getElementById('dmInput').onkeydown=e=>{if(e.key==='Enter')sendDM();};
+document.getElementById('dmSend').onclick=sendDM; document.getElementById('dmInput').onkeydown=e=>{if(e.key==='Enter')sendDM();};
 </script>
 </body>
 </html>
